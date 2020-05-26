@@ -197,7 +197,7 @@ jobs:
           dir lede
           gzip lede/out/*.img
           mv lede/out/*img* ./artifact/
-          cp lede/friendlywrt/.config ./artifact/
+      #    cp lede/friendlywrt/.config ./artifact/
           
       #- name: Upload artifact
       #  uses: actions/upload-artifact@master
