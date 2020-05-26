@@ -195,9 +195,12 @@ jobs:
         run: |
           dir ./
           dir lede
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: OpenWrt firmware
-          path: ./bin/targets/
+          gzip lede/out/*.img
+          mv lede/out/*img* ./artifact/
+          cp lede/friendlywrt/.config ./artifact/
+          
+      #- name: Upload artifact
+      #  uses: actions/upload-artifact@master
+      #  with:
+      #    name: OpenWrt firmware
+      #    path: ./bin/targets/
