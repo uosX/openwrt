@@ -43,21 +43,25 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           df -h
+          pwd
  
       - name: clone git
         run: |
           git clone https://github.com/openwrt/openwrt.git
+          pwd
       - name: Update feeds
         run: |
           cd openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+          pwd
   
       - name: Generate configuration file
         run: |
           cd openwrt
           make defconfig
           cat ../.config > ./.config
+          pwd
   
       - name: Make download
         run: |
@@ -65,11 +69,13 @@ jobs:
           make -j8 download V=99
           #find ./dl/ -size -1024c -exec rm -f {} \;
           df -h
+          pwd
  
       - name: Compile firmware
         run: |
           cd openwrt
           make V=99
+          pwd
           
       - name: Prepare artifact
         run: |
@@ -77,5 +83,6 @@ jobs:
           cd ./bin/targets/
           zip -r pake.zip ./          
           cp pake.zip ./artifact/
+          pwd
           
           
