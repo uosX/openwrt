@@ -44,33 +44,33 @@ jobs:
           sudo -E apt-get clean
 
           df -h
-		  
-	  - name：clone git
-		run: |
-		  git clone https://github.com/openwrt/openwrt.git
-		  
+ 
+      - name：clone git
+        run: |
+          git clone https://github.com/openwrt/openwrt.git
+	  
       - name: Update feeds
         run: |
-		  cd openwrt
+          cd openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 		  
       - name: Generate configuration file
         run: |
-		  cd openwrt
+          cd openwrt
           make defconfig
           #cat ../.config > ./.config
 		  
       - name: Make download
         run: |
-		  cd openwrt
+          cd openwrt
           make download -j8
           find ./dl/ -size -1024c -exec rm -f {} \;
           df -h
 		  
       - name: Compile firmware
         run: |
-		  cd openwrt
+          cd openwrt
           make V=99
 		  
       - name: Prepare artifact
