@@ -44,52 +44,53 @@ jobs:
           sudo -E apt-get clean
           df -h
           pwd
+          dir
  
       - name: clone git
         run: |
           git clone https://github.com/openwrt/openwrt.git
           pwd
+          dir
 
       - name: Update feeds
         run: |
-          cd openwrt
+          pwd
+          dir
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          pwd
   
       - name: Generate configuration file
         run: |
-          cd openwrt
-          make defconfig
-          #cat ../.config > ./.config
           pwd
+          dir
+          make defconfig
+          #cat ../.config > ./.config          
   
       - name: Make download
         run: |
-          cd openwrt
+          pwd
+          dir
           make download -j8
           find ./dl/ -size -1024c -exec rm -f {} \;
           df -h
-          pwd
  
       - name: Compile firmware
         run: |
-          cd openwrt
-          make V=99
           pwd
+          dir
+          make V=99          
 
       - name: Prepare artifact
         run: |
-          find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}
           pwd
+          dir
+          find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}          
 
       - name: Prepare artifact
         run: |
           dir ./
-          pwd
-          #ls bin/
-          #ls bin/targets/x86/64
-          cp bin/targets/x86/64/*img* ./artifact/
+          pwd          
+          cp -r ./bin/targets/ ./artifact/
           cp ./.config ./artifact/
           
       #- name: Upload artifact
