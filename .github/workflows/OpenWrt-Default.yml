@@ -46,21 +46,21 @@ jobs:
           pwd
       - name: Update feeds
         run: |
-          cd openwrt
+          #cd openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           pwd
   
       - name: Generate configuration file
         run: |
-          cd openwrt
+          #cd openwrt
           make defconfig
           cat ../.config > ./.config
           pwd
   
       - name: Make download
         run: |
-          cd openwrt
+          #cd openwrt
           make -j8 download V=99
           #find ./dl/ -size -1024c -exec rm -f {} \;
           df -h
@@ -68,7 +68,7 @@ jobs:
  
       - name: Compile firmware
         run: |
-          cd openwrt
+          #cd openwrt
           make V=99
           pwd
           
