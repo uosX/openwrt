@@ -76,8 +76,10 @@ jobs:
       - name: Generate configuration file
         run: |
           #cd openwrt
+          pwd
+          dir
           make defconfig
-          cat ../../.config > ./.config
+          cat ../.config > ./.config
           pwd
   
       - name: Make download
