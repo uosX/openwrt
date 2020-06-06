@@ -68,8 +68,8 @@ jobs:
         run: |
           pwd          
           #make defconfig
-          wget https://raw.githubusercontent.com/uosX/openwrt/master/def.cfg          
-          cat def.cfg > ./.config          
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/.config     
+          cat .config > ./.config          
           pwd
   
       - name: Make download
