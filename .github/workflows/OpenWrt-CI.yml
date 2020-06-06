@@ -50,13 +50,11 @@ jobs:
           ./scripts/feeds install -a
   
       - name: Generate configuration file
-        run: |
-          pwd
-          dir
+        run: |          
           make defconfig
-          wget https://raw.githubusercontent.com/uosX/openwrt/master/compile.config
-          cat compile.config
-          cat compile.config >> .config          
+          #wget https://raw.githubusercontent.com/uosX/openwrt/master/compile.config
+          #cat compile.config
+          #cat compile.config >> .config          
   
       - name: Make download
         run: |
