@@ -43,6 +43,7 @@ jobs:
           pwd
           dir
           git clone https://github.com/openwrt/openwrt.git
+          cd ../
           
           git clone https://github.com/coolsnowwolf/lede
           
