@@ -97,9 +97,9 @@ jobs:
         run: |
           rm -rf ./artifact/
           mkdir -p ./artifact/
-          find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          find bin/targets/ -name "openwrt_*img.zip" | xargs -i mv -f {} ./artifact/
                     
-          UPLOAD_WERANSFER: true
+          #UPLOAD_WERANSFER: true
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
