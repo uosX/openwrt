@@ -26,8 +26,7 @@ jobs:
       - name: Space cleanup
         env:
           DEBIAN_FRONTEND: noninteractive
-        run: |
-          cat ./def.cfg
+        run: |          
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
           sudo apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
@@ -42,8 +41,9 @@ jobs:
           
           cd ../
           git clone https://github.com/coolsnowwolf/lede                    
-          mv lede/package/lean/ openwrt/package/                    
-
+          mv lede/package/lean/ openwrt/package/
+          cat ./def.cfg
+          
       - name: Update feeds
         run: |
           pwd
