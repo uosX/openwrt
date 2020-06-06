@@ -6,9 +6,6 @@ on:
       - master
     paths:
       - '.github/workflows/OpenWrt-Default.yml'
-      - ''
-
-    
     
   schedule:
     - cron: '0 */6 * * *'
@@ -69,12 +66,10 @@ jobs:
   
       - name: Generate configuration file
         run: |
-          pwd
-          SSH_ACTIONS: true
+          pwd          
           #make defconfig
           wget https://raw.githubusercontent.com/uosX/openwrt/master/def.cfg          
-          cat def.cfg ./.config
-          SSH_ACTIONS: true
+          cat def.cfg ./.config          
           pwd
   
       - name: Make download
@@ -95,7 +90,7 @@ jobs:
           cp ./.config ./artifact/
           cd ./bin/targets/
           ls ./bin/targets/
-          ls ./targets/
+          ls ./target/
           #zip -r pake.zip ./          
           #cp pake.zip ./artifact/
           pwd
