@@ -51,6 +51,7 @@ jobs:
           
           mv lede/package/lean/ openwrt/package/
           
+          cd openwrt
           echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
           echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default、
           echo "src-git routing https://git.openwrt.org/feed/routing.git" >> feeds.conf.default
@@ -76,7 +77,7 @@ jobs:
         run: |
           #cd openwrt
           make defconfig
-          cat ../.config > ./.config
+          cat ../../.config > ./.config
           pwd
   
       - name: Make download
