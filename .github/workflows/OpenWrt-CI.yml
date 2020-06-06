@@ -80,10 +80,10 @@ jobs:
         run: |
           dir ./
           pwd
-          zip package.zip ./bing/targets/
-          cp -r package.zip ./actifact/
+          #zip package.zip ./bin/targets/
+          #cp -r package.zip ./actifact/
           #cp -r ./bin/targets/ ./artifact/
-          cp ./.config ./artifact/
+          #cp ./.config ./artifact/
           
       - name: Zip Files
         run: |
