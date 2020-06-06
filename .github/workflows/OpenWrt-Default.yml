@@ -41,7 +41,7 @@ jobs:
  
       - name: clone git
         run: |          
-          git clone https://github.com/openwrt/openwrt.git          
+          git clone https://github.com/openwrt/openwrt.git       
           cd ../
           git clone https://github.com/coolsnowwolf/lede                    
           mv lede/package/lean/ openwrt/package/
@@ -71,9 +71,9 @@ jobs:
         run: |
           pwd
           SSH_ACTIONS: true
-          make defconfig
-          CONFIG_FILE: 'def.cfg'
-          cat CONFIG_FILE ./.config
+          #make defconfig
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/def.cfg          
+          cat def.cfg ./.config
           SSH_ACTIONS: true
           pwd
   
