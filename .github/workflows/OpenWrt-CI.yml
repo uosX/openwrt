@@ -75,7 +75,8 @@ jobs:
           dir
           ls ./bin
           ls ./target
-          find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}          
+          find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}
+                
       - name: Prepare artifact
         run: |
           dir ./
@@ -94,9 +95,13 @@ jobs:
           rm -rf ./artifact/
           mkdir -p ./artifact/
           find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+                    
+          UPLOAD_WERANSFER: true
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: openwrt
           path: ./artifact/
+          
+          
