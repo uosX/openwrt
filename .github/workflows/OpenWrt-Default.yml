@@ -6,6 +6,10 @@ on:
       - master
     paths:
       - '.github/workflows/OpenWrt-Default.yml'
+      - ''
+
+    
+    
   schedule:
     - cron: '0 */6 * * *'
 
@@ -37,8 +41,7 @@ jobs:
  
       - name: clone git
         run: |          
-          git clone https://github.com/openwrt/openwrt.git
-          
+          git clone https://github.com/openwrt/openwrt.git          
           cd ../
           git clone https://github.com/coolsnowwolf/lede                    
           mv lede/package/lean/ openwrt/package/
@@ -67,6 +70,8 @@ jobs:
       - name: Generate configuration file
         run: |
           make defconfig
+          CONFIG_FILE: 'def.cfg'
+          cat CONFIG_FILE ./.config
           SSH_ACTIONS: true
   
       - name: Make download
