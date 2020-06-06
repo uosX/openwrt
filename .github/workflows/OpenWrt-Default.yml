@@ -1,17 +1,13 @@
-#
-# This is free software, lisence use MIT.
-# 
-
 name: OpenWrt-Default
 
 on:
   push:
     branches: 
       - master
-  # schedule:
-  #   - cron: 0 20 * * *
-  # release:
-  #   types: [published]
+    paths:
+      - '.github/workflows/OpenWrt-Default.yml'
+  schedule:
+    - cron: '0 */6 * * *'
 
 jobs:
 
