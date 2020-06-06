@@ -69,10 +69,13 @@ jobs:
   
       - name: Generate configuration file
         run: |
+          pwd
+          SSH_ACTIONS: true
           make defconfig
           CONFIG_FILE: 'def.cfg'
           cat CONFIG_FILE ./.config
           SSH_ACTIONS: true
+          pwd
   
       - name: Make download
         run: |          
