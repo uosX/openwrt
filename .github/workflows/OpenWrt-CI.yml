@@ -74,7 +74,7 @@ jobs:
           pwd
           dir
           ls ./bin
-          ls ./targets
+          ls ./target
           find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}          
       - name: Prepare artifact
         run: |
