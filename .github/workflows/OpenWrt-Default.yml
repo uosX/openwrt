@@ -66,8 +66,12 @@ jobs:
   
       - name: Generate configuration file
         run: |
-          make defconfig
+          pwd
+          dir
+          make defconfig          
           cat ../.config > ./.config
+          cat ../.config
+          cat ./.config
           pwd
   
       - name: Make download
