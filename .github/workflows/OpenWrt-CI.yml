@@ -54,7 +54,9 @@ jobs:
           pwd
           dir
           make defconfig
-          #cat ../.config > ./.config          
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/compile.config
+          cat compile.config
+          cat compile.config > .config          
   
       - name: Make download
         run: |
