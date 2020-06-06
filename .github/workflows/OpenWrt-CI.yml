@@ -56,7 +56,7 @@ jobs:
           make defconfig
           wget https://raw.githubusercontent.com/uosX/openwrt/master/compile.config
           cat compile.config
-          cat compile.config > .config          
+          cat compile.config >> .config          
   
       - name: Make download
         run: |
