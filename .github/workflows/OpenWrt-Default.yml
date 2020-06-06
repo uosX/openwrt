@@ -35,25 +35,21 @@ jobs:
           sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
-          df -h
-          pwd
  
       - name: clone git
+        run: |          
+          git clone https://github.com/openwrt/openwrt.git
+          
+          cd ../
+          git clone https://github.com/coolsnowwolf/lede                    
+          mv lede/package/lean/ openwrt/package/                    
+          
+      - name: Update feeds
         run: |
           pwd
-          dir
-          git clone https://github.com/openwrt/openwrt.git
-          cd ../
-          
-          git clone https://github.com/coolsnowwolf/lede
-          pwd
-          dir
-          
-          mv lede/package/lean/ openwrt/package/
-          
           cd openwrt
           echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
-          echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default、
+          echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default
           echo "src-git routing https://git.openwrt.org/feed/routing.git" >> feeds.conf.default
           echo "src-git telephony https://git.openwrt.org/feed/telephony.git" >> feeds.conf.default
           echo "#src-git video https://github.com/openwrt/video.git" >> feeds.conf.default
@@ -63,11 +59,6 @@ jobs:
           echo "#src-link custom /usr/src/openwrt/custom-feed" >> feeds.conf.default
           echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
           
-          pwd
-          dir
-          
-      - name: Update feeds
-        run: |
           #cd openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
@@ -75,16 +66,12 @@ jobs:
   
       - name: Generate configuration file
         run: |
-          #cd openwrt
-          pwd
-          dir
           make defconfig
           cat ../.config > ./.config
           pwd
   
       - name: Make download
-        run: |
-          #cd openwrt
+        run: |          
           make -j8 download V=99
           #find ./dl/ -size -1024c -exec rm -f {} \;
           df -h
