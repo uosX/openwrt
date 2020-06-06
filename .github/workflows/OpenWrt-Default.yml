@@ -76,7 +76,24 @@ jobs:
         run: |
           cp ./.config ./artifact/
           cd ./bin/targets/
-          zip -r pake.zip ./          
-          cp pake.zip ./artifact/
+          ls ./bin/targets/
+          ls ./targets/
+          #zip -r pake.zip ./          
+          #cp pake.zip ./artifact/
           pwd
           
+      - name: Zip Files
+        run: |
+          find bin/targets/ -name "openwrt_*img*" | xargs -i zip -r {}.zip {}
+          
+      - name: Assemble Artifact
+        run: |
+          rm -rf ./artifact/
+          mkdir -p ./artifact/
+          find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: openwrt
+          path: ./artifact/
