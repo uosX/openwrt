@@ -60,36 +60,19 @@ jobs:
   
       - name: Make download
         run: |
-          pwd
-          dir
-          make download -j8
-          find ./dl/ -size -1024c -exec rm -f {} \;
+          #find ./dl/ -size -1024c -exec rm -f {} \;
+          make download -j8          
           df -h
  
       - name: Compile firmware
         run: |
-          pwd
-          dir
-          make V=99          
-      - name: Prepare artifact
-        run: |
-          pwd
-          dir
-          ls ./bin
-          ls ./target
-          find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}
-                
-      - name: Prepare artifact
-        run: |
-          pwd
-          dir ./
-          ls bin/targets/
-          ls target/
+          make V=99
           
-          #zip package.zip ./bin/targets/
-          #cp -r package.zip ./actifact/
-          #cp -r ./bin/targets/ ./artifact/
-          #cp ./.config ./artifact/
+      - name: Prepare artifact
+        run: |
+          pwd
+          ls bin/targets/          
+          cp .config ./artifact/
           
       - name: Zip Files
         run: |
