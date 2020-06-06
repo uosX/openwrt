@@ -42,7 +42,7 @@ jobs:
           cd ../
           git clone https://github.com/coolsnowwolf/lede                    
           mv lede/package/lean/ openwrt/package/
-          cat ./def.cfg
+          
           
       - name: Update feeds
         run: |
@@ -66,13 +66,8 @@ jobs:
   
       - name: Generate configuration file
         run: |
-          pwd
-          dir
-          cat ../def.cfg          
-          make defconfig          
-          cat ../def.cfg > ./.config          
-          cat ./.config
-          pwd
+          make defconfig
+          SSH_ACTIONS: true
   
       - name: Make download
         run: |          
