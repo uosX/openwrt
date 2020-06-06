@@ -79,8 +79,11 @@ jobs:
                 
       - name: Prepare artifact
         run: |
-          dir ./
           pwd
+          dir ./
+          ls bin/targets/
+          ls target/
+          
           #zip package.zip ./bin/targets/
           #cp -r package.zip ./actifact/
           #cp -r ./bin/targets/ ./artifact/
