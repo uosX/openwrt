@@ -1,11 +1,11 @@
-name: OpenWrt-CI
+name: openwrt ci
 
 on:
   push:
     branches: 
       - master
     paths:
-      - '.github/workflows/OpenWrt-CI.yml'
+      - '.github/workflows/openwrt_ci.yml'
   schedule:
     - cron: '0 18 */5 * *'
 
@@ -58,7 +58,6 @@ jobs:
   
       - name: Make download
         run: |
-          #find ./dl/ -size -1024c -exec rm -f {} \;
           make download -j8          
           df -h
  
@@ -76,9 +75,9 @@ jobs:
           ls bin/targets/x86
           cp .config ./artifact/
                 
-      - name: Assemble Artifact
-        run: |
-          find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
+      #- name: Assemble Artifact
+      #  run: |
+      #    find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
