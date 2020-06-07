@@ -1,8 +1,6 @@
 
 name: openwrt fq
 on:
-  watch:
-    types: started
   push:
     branches: 
       - master
@@ -18,7 +16,7 @@ jobs:
     #if: github.repository == 'uosX/openwrt'
     
     steps:      
-      - name: Setup Debug Session
+      - name: ssh Session
       #  uses: csexton/debugger-action@master
         env:
           SSH_ACTIONS: true
