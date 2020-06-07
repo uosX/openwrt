@@ -37,6 +37,7 @@ jobs:
           sudo apt-get -y install antlr3 asciidoc autoconf automake autopoint binutils build-essential bzip2 device-tree-compiler flex g++-multilib gawk gcc-multilib gettext git git-core gperf lib32gcc1 libc6-dev-i386 libelf-dev libglib2.0-dev libncurses5-dev libssl-dev libtool libz-dev msmtp p7zip p7zip-full patch python2.7 python3.5 qemu-utils subversion texinfo uglifyjs unzip upx wget xmlto zlib1g-dev
           sudo apt-get -y autoremove --purge
           sudo apt-get clean
+          
            
       - name: clone git
         run: |          
