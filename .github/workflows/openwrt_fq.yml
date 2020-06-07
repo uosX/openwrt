@@ -17,9 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.repository == 'uosX/openwrt'
     
-    steps:
+    steps:      
       - name: Setup Debug Session
-        uses: csexton/debugger-action@master
+      #  uses: csexton/debugger-action@master
+        env:
+          SSH_ACTIONS: true
+        
 
       - name: Checkout
         uses: actions/checkout@master
