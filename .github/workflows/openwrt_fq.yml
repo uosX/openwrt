@@ -1,6 +1,8 @@
-name: openwrt fq
 
+name: openwrt fq
 on:
+  watch:
+    types: started
   push:
     branches: 
       - master
@@ -11,13 +13,13 @@ on:
     - cron: '0 18 */5 * *'
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     if: github.repository == 'uosX/openwrt'
-
+    
     steps:
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
 
       - name: Checkout
         uses: actions/checkout@master
@@ -28,7 +30,6 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |          
-          SSH_ACTIONS: true
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
           sudo apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
@@ -36,6 +37,8 @@ jobs:
           sudo apt-get -y install antlr3 asciidoc autoconf automake autopoint binutils build-essential bzip2 device-tree-compiler flex g++-multilib gawk gcc-multilib gettext git git-core gperf lib32gcc1 libc6-dev-i386 libelf-dev libglib2.0-dev libncurses5-dev libssl-dev libtool libz-dev msmtp p7zip p7zip-full patch python2.7 python3.5 qemu-utils subversion texinfo uglifyjs unzip upx wget xmlto zlib1g-dev
           sudo apt-get -y autoremove --purge
           sudo apt-get clean
+          
+
  
       - name: clone git
         run: |          
@@ -60,7 +63,6 @@ jobs:
                     
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          SSH_ACTIONS: true       
   
       - name: Generate configuration file
         run: |          
@@ -68,7 +70,6 @@ jobs:
           wget https://raw.githubusercontent.com/uosX/openwrt/master/.config     
           cat .config
           make defconfig
-          SSH_ACTIONS: true
   
       - name: Make download
         run: |          
@@ -83,7 +84,6 @@ jobs:
           rm -rf ./artifact/
           mkdir ./artifact/          
           pwd
-          SSH_ACTIONS: true
                     
           cp .config ./artifact/
           
