@@ -22,6 +22,7 @@ jobs:
     steps:  
       - name: Setup Debug Session
         uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true'
 
       - name: Checkout
         uses: actions/checkout@master
