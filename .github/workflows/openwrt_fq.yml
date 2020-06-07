@@ -68,7 +68,7 @@ jobs:
         run: |          
           rm -rf .config
           wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
-          cat openwrt_fq > .config
+          cat openwrt_fq.config > .config
           cat .config
           #make defconfig
   
