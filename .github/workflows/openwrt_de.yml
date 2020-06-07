@@ -72,7 +72,7 @@ jobs:
           mkdir ./artifact/
           
           pwd
-          ls bin/targets/x86
+          ls bin/targets/
           cp .config ./artifact/
                 
       #- name: Assemble Artifact
