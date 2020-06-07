@@ -1,11 +1,11 @@
-name: OpenWrt-Default
+name: openwrt fq
 
 on:
   push:
     branches: 
       - master
     paths:
-      - '.github/workflows/OpenWrt-Default.yml'
+      - '.github/workflows/openwrt_fq.yml'
     
   schedule:
     - cron: '0 18 */5 * *'
@@ -42,11 +42,9 @@ jobs:
           cd ../
           git clone https://github.com/coolsnowwolf/lede                    
           mv lede/package/lean/ openwrt/package/
-          
-          
+                    
       - name: Update feeds
         run: |
-          pwd
           cd openwrt
           echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
           echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default
@@ -58,53 +56,46 @@ jobs:
           echo "#src-git oldpackages http://git.openwrt.org/packages.git" >> feeds.conf.default
           echo "#src-link custom /usr/src/openwrt/custom-feed" >> feeds.conf.default
           echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
-          
-          #cd openwrt
+                    
           ./scripts/feeds update -a
-          ./scripts/feeds install -a
-          pwd
+          ./scripts/feeds install -a          
   
       - name: Generate configuration file
-        run: |
-          pwd          
+        run: |          
           rm -rf .config
           wget https://raw.githubusercontent.com/uosX/openwrt/master/.config     
           cat .config
           make defconfig
-          pwd
   
       - name: Make download
         run: |          
           make -j8 download V=99
-          #find ./dl/ -size -1024c -exec rm -f {} \;
-          df -h
-          pwd
  
       - name: Compile firmware
-        run: |
-          #cd openwrt
+        run: |          
           make V=99
-          pwd
           
       - name: Prepare artifact
         run: |
-          cp ./.config ./artifact/
-          cd ./bin/targets/
-          ls ./bin/targets/
-          ls ./target/
-          #zip -r pake.zip ./          
-          #cp pake.zip ./artifact/
+          rm -rf ./artifact/
+          mkdir ./artifact/          
           pwd
           
-      - name: Zip Files
-        run: |
-          find bin/targets/ -name "openwrt_*img*" | xargs -i zip -r {}.zip {}
+          cp .config ./artifact/
           
-      - name: Assemble Artifact
-        run: |
-          rm -rf ./artifact/
-          mkdir -p ./artifact/
-          find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          ls bin/targets/x86/64
+          ls ./bin/targets/
+          
+          
+      #- name: Zip Files
+      #  run: |
+      #    find bin/targets/ -name "openwrt_*img*" | xargs -i zip -r {}.zip {}
+          
+      #- name: Assemble Artifact
+      #  run: |
+      #    rm -rf ./artifact/
+      #    mkdir -p ./artifact/
+      #    find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
