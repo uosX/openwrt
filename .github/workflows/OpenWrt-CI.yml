@@ -75,18 +75,10 @@ jobs:
           pwd
           ls bin/targets/x86
           cp .config ./artifact/
-          
-      - name: Zip Files
-        run: |
-          find bin/targets/ -name "openwrt_*img*" | xargs -i zip -r {}.zip {}
-          
+                
       - name: Assemble Artifact
         run: |
-          rm -rf ./artifact/
-          mkdir -p ./artifact/
-          find bin/targets/ -name "openwrt_*img.zip" | xargs -i mv -f {} ./artifact/
-                    
-          #UPLOAD_WERANSFER: true
+          find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
