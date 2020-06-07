@@ -10,17 +10,19 @@ on:
   schedule:
     - cron: '0 18 */5 * *'
 
+env:
+  SSH_ACTIONS: false
+  TZ: Asia/Shanghai
+
 jobs:
   build:
     runs-on: ubuntu-latest
     #if: github.repository == 'uosX/openwrt'
     
     steps:      
-      - name: ssh Session
-      #  uses: csexton/debugger-action@master
-        env:
-          SSH_ACTIONS: true
-        
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true'        
 
       - name: Checkout
         uses: actions/checkout@master
