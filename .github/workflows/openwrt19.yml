@@ -49,8 +49,10 @@ jobs:
         run: |          
           make defconfig
           wget https://raw.githubusercontent.com/uosX/openwrt/master/op19.config
-          cat op19.config
-          cat op19.config >> .config          
+          
+          cat op19.config > .config
+          cat .config
+          
   
       - name: Make download
         run: |
