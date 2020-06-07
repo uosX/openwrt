@@ -20,9 +20,9 @@ jobs:
     #if: github.repository == 'uosX/openwrt'
     
     steps:  
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master
-        if: env.SSH_ACTIONS == 'true'
+      #- name: Setup Debug Session
+        #uses: P3TERX/debugger-action@master
+        #if: env.SSH_ACTIONS == 'true'
 
       - name: Checkout
         uses: actions/checkout@master
@@ -33,45 +33,44 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |          
-          docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
-          sudo apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-          sudo apt-get update          
-          sudo apt-get -y install antlr3 asciidoc autoconf automake autopoint binutils build-essential bzip2 device-tree-compiler flex g++-multilib gawk gcc-multilib gettext git git-core gperf lib32gcc1 libc6-dev-i386 libelf-dev libglib2.0-dev libncurses5-dev libssl-dev libtool libz-dev msmtp p7zip p7zip-full patch python2.7 python3.5 qemu-utils subversion texinfo uglifyjs unzip upx wget xmlto zlib1g-dev
+          sudo apt-get update
+          sudo apt-get -y install subversion build-essential libncurses5-dev zlib1g-dev gawk git ccache gettext libssl-dev xsltproc zip
+          sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3.5 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget
           sudo apt-get -y autoremove --purge
           sudo apt-get clean
-          
-           
+                     
       - name: clone git
         run: |          
-          git clone https://github.com/openwrt/openwrt.git       
+          git clone https://git.openwrt.org/openwrt/openwrt.git
+          cd openwrt/
+          git fetch --tags
+          git tag -l
+          git checkout v19.07.3
+          
           cd ../
-          git clone https://github.com/coolsnowwolf/lede                    
-          mv lede/package/lean/ openwrt/package/
+          git clone https://github.com/coolsnowwolf/lede
+          
+          cp -r lede/package/lean/ openwrt/package/
                     
-      - name: Update feeds
+      - name: change Update install feeds
         run: |
           cd openwrt
-          echo "src-git packages https://github.com/coolsnowwolf/packages" > feeds.conf.default
-          echo "src-git luci https://github.com/coolsnowwolf/luci" >> feeds.conf.default
-          echo "src-git routing https://git.openwrt.org/feed/routing.git" >> feeds.conf.default
-          echo "src-git telephony https://git.openwrt.org/feed/telephony.git" >> feeds.conf.default
-          echo "#src-git video https://github.com/openwrt/video.git" >> feeds.conf.default
-          echo "#src-git targets https://github.com/openwrt/targets.git" >> feeds.conf.default
-          echo "#src-git management https://github.com/openwrt-management/packages.git" >> feeds.conf.default
-          echo "#src-git oldpackages http://git.openwrt.org/packages.git" >> feeds.conf.default
-          echo "#src-link custom /usr/src/openwrt/custom-feed" >> feeds.conf.default
+          sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
           echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
-                    
+              
           ./scripts/feeds update -a
+          
           ./scripts/feeds install -a
   
       - name: Generate configuration file
         run: |          
           rm -rf .config
-          wget https://raw.githubusercontent.com/uosX/openwrt/master/.config     
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
+          cat openwrt_fq > .config
           cat .config
-          make defconfig
+          #make defconfig
   
       - name: Make download
         run: |          
@@ -89,8 +88,9 @@ jobs:
                     
           cp .config ./artifact/
           
+          ls /bin/targets/
           ls bin/targets/x86/64
-          ls ./bin/targets/
+          
           
           
       #- name: Zip Files
