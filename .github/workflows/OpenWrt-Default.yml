@@ -67,10 +67,10 @@ jobs:
       - name: Generate configuration file
         run: |
           pwd          
-          #make defconfig
           rm -rf .config
           wget https://raw.githubusercontent.com/uosX/openwrt/master/.config     
           cat .config
+          make defconfig
           pwd
   
       - name: Make download
