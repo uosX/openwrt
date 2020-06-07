@@ -1,0 +1,82 @@
+name: openwrt19
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - '.github/workflows/openwrt19.yml'
+  schedule:
+    - cron: '0 18 */5 * *'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Space cleanup
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |          
+          sudo rm -rf /etc/apt/sources.list.d          
+          sudo -E apt-get update
+          sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler zip unzip
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+          df -h
+ 
+      - name: clone git
+        run: |
+          git clone -b dev-19.07 https://github.com/Lienol/openwrt op19
+          
+      - name: Update feeds
+        run: |
+          cd op19/
+          ./scripts/feeds clean
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+  
+      - name: Generate configuration file
+        run: |          
+          make defconfig
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/op19.config
+          cat op19.config
+          cat op19.config >> .config          
+  
+      - name: Make download
+        run: |
+          make -j8 download V=99
+ 
+      - name: Compile firmware
+        run: |
+          make V=99
+          
+      - name: Prepare artifact
+        run: |          
+          rm -rf ./artifact/
+          mkdir ./artifact/          
+          pwd
+          ls bin/targets/x86/64
+          cp .config ./artifact/
+          cp bin/targets/x86/64/openwrt-x86-64-combined-ext4-efi.img.gz ./artifact/
+          cp bin/targets/x86/64/openwrt-x86-64-combined-squashfs-efi.img.gz ./artifact/
+                
+      #- name: Assemble Artifact
+      #  run: |
+      #    find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: openwrt
+          path: ./artifact/
+          
+          
