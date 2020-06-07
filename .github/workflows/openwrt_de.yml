@@ -1,11 +1,11 @@
-name: openwrt ci
+name: openwrt de
 
 on:
   push:
     branches: 
       - master
     paths:
-      - '.github/workflows/openwrt_ci.yml'
+      - '.github/workflows/openwrt_de.yml'
   schedule:
     - cron: '0 18 */5 * *'
 
