@@ -68,8 +68,12 @@ jobs:
           
       - name: Prepare artifact
         run: |
+          
+          rm -rf ./artifact/
+          mkdir ./artifact/
+          
           pwd
-          ls bin/targets/          
+          ls bin/targets/x86
           cp .config ./artifact/
           
       - name: Zip Files
