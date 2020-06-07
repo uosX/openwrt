@@ -38,7 +38,7 @@ jobs:
         run: |
           git clone -b dev-19.07 https://github.com/Lienol/openwrt op19
           
-      - name: Update feeds
+      - name: Update install feeds
         run: |
           cd op19/
           ./scripts/feeds clean
