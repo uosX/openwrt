@@ -15,11 +15,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.repository == 'uosX/openwrt'
+    #if: github.repository == 'uosX/openwrt'
     
-    steps:
+    steps:      
       - name: SSH connection to Actions
-        uses: P3TERX/debugger-action@master
+        uses: uosX/debugger-action@master
 
       - name: Checkout
         uses: actions/checkout@master
