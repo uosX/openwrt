@@ -19,7 +19,7 @@ jobs:
     
     steps:      
       - name: SSH connection to Actions
-        uses: uosX/debugger-action@master
+        uses: P3TERX/debugger-action@master
 
       - name: Checkout
         uses: actions/checkout@master
