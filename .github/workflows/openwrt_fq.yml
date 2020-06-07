@@ -19,10 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.repository == 'uosX/openwrt'
     
-    steps:      
-      - name: SSH connection to Actions
+    steps:  
+      - name: Setup Debug Session
         uses: P3TERX/debugger-action@master
-        if: env.SSH_ACTIONS == 'true'        
 
       - name: Checkout
         uses: actions/checkout@master
