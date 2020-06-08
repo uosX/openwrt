@@ -59,16 +59,18 @@ jobs:
   
       - name: Make download
         run: |
+          cd /home/runner/openwrt/
           make download -j8          
           df -h
  
       - name: Compile firmware
         run: |
+          cd /home/runner/openwrt/
           make V=99
           
       - name: Prepare artifact
         run: |
-          
+          cd /home/runner/openwrt/
           rm -rf ./artifact/
           mkdir ./artifact/
           
