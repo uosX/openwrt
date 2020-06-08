@@ -38,49 +38,57 @@ jobs:
           sudo apt-get clean
                      
       - name: clone git
-        run: |          
+        run: |
+          cd /home/runner/openwrt/
           git clone https://git.openwrt.org/openwrt/openwrt.git
+          
           cd openwrt/
+          
           git fetch --tags
           git tag -l
           git checkout v19.07.3
           
-          cd ../
+          cd /home/runner/openwrt/
           git clone https://github.com/coolsnowwolf/lede
           
           cp -r lede/package/lean/ openwrt/package/
           
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master                   
+      #- name: Setup Debug Session
+      #  uses: P3TERX/debugger-action@master                   
           
       - name: change Update install feeds
         run: |
-          #cd openwrt
-          #sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-          #sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          #echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
+          cd /home/runner/openwrt/openwrt
+          sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
               
-          #./scripts/feeds update -a          
-          #./scripts/feeds install -a
+          ./scripts/feeds update -a     
+          ./scripts/feeds install -a
   
       - name: Generate configuration file
-        run: |          
-      #    rm -rf .config
-      #    wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
-      #    cat openwrt_fq.config > .config
-      #    cat .config
+        run: |
+          cd /home/runner/openwrt/openwrt
+          rm -rf .config
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
+          cat openwrt_fq.config > .config
+          cat .config
           #make defconfig
   
       - name: Make download
         run: |          
+          cd /home/runner/openwrt/openwrt
           make -j8 download V=99
         
       - name: Compile firmware
         run: |
+          cd /home/runner/openwrt/openwrt
           make V=99
         
       - name: Prepare artifact
         run: |
+          cd /home/runner/openwrt/openwrt
+          
           rm -rf ./artifact/
           mkdir ./artifact/          
           pwd
