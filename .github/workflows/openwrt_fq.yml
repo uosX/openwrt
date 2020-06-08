@@ -95,11 +95,12 @@ jobs:
                     
           cp .config ./artifact/
           
-          ls /bin/targets/
-          #ls bin/targets/x86/64
+          ls ./bin/targets/
+          ls ./bin/targets/x86/64
+          cp ./bin/targets/x86/64/*openwrt_*.img* ./artifact/
           
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master          
+      #- name: Setup Debug Session
+      #  uses: P3TERX/debugger-action@master          
           
       #- name: Zip Files
       #  run: |
