@@ -36,17 +36,19 @@ jobs:
  
       - name: clone git
         run: |
+          cd /home/runner/
           git clone -b dev-19.07 https://github.com/Lienol/openwrt op19
           
       - name: Update install feeds
         run: |
-          cd op19/
+          cd /home/runner/op19/
           ./scripts/feeds clean
           ./scripts/feeds update -a
           ./scripts/feeds install -a
   
       - name: Generate configuration file
-        run: |          
+        run: |
+          cd /home/runner/op19/
           make defconfig
           wget https://raw.githubusercontent.com/uosX/openwrt/master/op19.config
           cat op19.config > .config
@@ -54,14 +56,17 @@ jobs:
           
       - name: Make download
         run: |
+          cd /home/runner/op19/
           make -j8 download V=99
  
       - name: Compile firmware
         run: |
+          cd /home/runner/op19/
           make V=99
           
       - name: Prepare artifact
-        run: |          
+        run: |
+          cd /home/runner/op19/
           rm -rf ./artifact/
           mkdir ./artifact/          
           pwd
