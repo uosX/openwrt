@@ -45,11 +45,11 @@ jobs:
           ./scripts/feeds update -a          
           ./scripts/feeds install -a
           
-      - name: Generate configuration file
-        run: |
+      #- name: Generate configuration file
+      #  run: |
           
-          uses: P3TERX/debugger-action@master
-          #if: env.SSH_ACTIONS == 'true'
+      - name: Setup Debug Session
+        uses: P3TERX/debugger-action@master   
   
       - name: Make download
         run: |         
