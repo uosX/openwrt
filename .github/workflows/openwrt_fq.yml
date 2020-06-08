@@ -79,6 +79,7 @@ jobs:
       - name: Setup Debug Session
         uses: P3TERX/debugger-action@master
         
+        
       - name: Compile firmware
         run: |
           make V=99
