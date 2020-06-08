@@ -45,12 +45,16 @@ jobs:
           ./scripts/feeds update -a          
           ./scripts/feeds install -a
           
-      #- name: Generate configuration file
-      #  run: |
+      - name: Generate configuration file
+        run: |
+          cd /home/runner/lede/
+          rm -rf .config
+          wget https://raw.githubusercontent.com/uosX/openwrt/master/lede.config   
+          cat lede.config > .config
+          cat .config
+          #make defconfig
           
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master   
-  
+        
       - name: Make download
         run: |         
           cd /home/runner/lede/
@@ -67,16 +71,16 @@ jobs:
       - name: Prepare artifact
         run: |
           cd /home/runner/lede/
+          
           rm -rf ./artifact/
           mkdir ./artifact/          
           pwd
                     
           cp .config ./artifact/
           
-          ls /bin/targets/
-          ls bin/targets/x86/64
-          
-          
+          ls ./bin/targets/
+          ls ./bin/targets/x86/64
+          cp ./bin/targets/x86/64/*openwrt_*.img* ./artifact/
           
       #- name: Zip Files
       #  run: |
