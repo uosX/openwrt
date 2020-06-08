@@ -11,7 +11,7 @@ on:
     - cron: '0 18 */5 * *'
 
 env:
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -20,9 +20,6 @@ jobs:
     #if: github.repository == 'uosX/openwrt'
     
     steps:  
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master
-        if: env.SSH_ACTIONS == 'true'
 
       - name: Checkout
         uses: actions/checkout@master
@@ -52,38 +49,36 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede
           
           cp -r lede/package/lean/ openwrt/package/
-                    
+          
+      - name: Setup Debug Session
+        uses: P3TERX/debugger-action@master                   
+          
       - name: change Update install feeds
         run: |
-          cd openwrt
-          sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
-          sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
+          #cd openwrt
+          #sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
+          #sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
+          #echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
               
-          ./scripts/feeds update -a
-          
-          ./scripts/feeds install -a
+          #./scripts/feeds update -a          
+          #./scripts/feeds install -a
   
       - name: Generate configuration file
         run: |          
-          rm -rf .config
-          wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
-          cat openwrt_fq.config > .config
-          cat .config
+      #    rm -rf .config
+      #    wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
+      #    cat openwrt_fq.config > .config
+      #    cat .config
           #make defconfig
   
       - name: Make download
         run: |          
           make -j8 download V=99
-
-      - name: Setup Debug Session
-        uses: P3TERX/debugger-action@master
-        
         
       - name: Compile firmware
         run: |
           make V=99
-          
+        
       - name: Prepare artifact
         run: |
           rm -rf ./artifact/
@@ -93,9 +88,10 @@ jobs:
           cp .config ./artifact/
           
           ls /bin/targets/
-          ls bin/targets/x86/64
+          #ls bin/targets/x86/64
           
-          
+      - name: Setup Debug Session
+        uses: P3TERX/debugger-action@master          
           
       #- name: Zip Files
       #  run: |
