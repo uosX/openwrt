@@ -73,47 +73,38 @@ jobs:
           wget https://raw.githubusercontent.com/uosX/openwrt/master/openwrt_fq.config    
           cat openwrt_fq.config > .config
           cat .config
-          #make defconfig
+          
+          #sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
+          #sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
+          #sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
+          
+          
+          cp /usr/bin/upx /home/runner/openwrt/staging_dir/host/bin/
+          cp /usr/bin/upx-ucl /home/runner/openwrt/staging_dir/host/bin/
+          
   
       - name: Make download
         run: |          
           cd /home/runner/openwrt/
-          make -j8 download V=99
+          make -j8 download V=s
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
         
       - name: Compile firmware
         run: |
           cd /home/runner/openwrt/
-          make V=99
+          echo -e "$(nproc) thread build."
+          make -j$(nproc) V=s
         
       - name: Prepare artifact
         run: |
           cd /home/runner/openwrt/
-          
-          rm -rf ./artifact/
-          mkdir ./artifact/          
-          pwd
-                    
-          cp .config ./artifact/
-          
-          ls ./bin/targets/
-          ls ./bin/targets/x86/64
-          cp ./bin/targets/x86/64/*openwrt_*.img* ./artifact/
-          
-      #- name: Setup Debug Session
-      #  uses: P3TERX/debugger-action@master          
-          
-      #- name: Zip Files
-      #  run: |
-      #    find bin/targets/ -name "openwrt_*img*" | xargs -i zip -r {}.zip {}
-          
-      #- name: Assemble Artifact
-      #  run: |
-      #    rm -rf ./artifact/
-      #    mkdir -p ./artifact/
-      #    find bin/targets/ -name "openwrt_*img.zip*" | xargs -i mv -f {} ./artifact/
+          cp .config bin
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: openwrt
-          path: ./artifact/
+          path: /home/runner/openwrt/bin
