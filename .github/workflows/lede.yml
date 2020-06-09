@@ -67,6 +67,9 @@ jobs:
           sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
           
           
+          cp /usr/bin/upx /home/runner/openwrt/lede/host/bin/
+          cp /usr/bin/upx-ucl /home/runner/openwrt/lede/host/bin/
+          
       - name: Make download
         run: |         
           cd /home/runner/lede/
