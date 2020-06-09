@@ -61,32 +61,24 @@ jobs:
         run: |
           cd /home/runner/openwrt/
           make download -j8          
-          df -h
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
  
       - name: Compile firmware
         run: |
           cd /home/runner/openwrt/
-          make V=99
+          echo -e "$(nproc) thread build."
+          make -j$(nproc) V=s
           
       - name: Prepare artifact
         run: |
           cd /home/runner/openwrt/
-          rm -rf ./artifact/
-          mkdir ./artifact/
-          
-          pwd
-          ls bin/targets/
-          find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/
-          cp .config ./artifact/
-                
-      #- name: Assemble Artifact
-      #  run: |
-      #    find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
+          cp .config bin
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: openwrt
-          path: ./artifact/
+          path: /home/runner/openwrt/bin
           
           
