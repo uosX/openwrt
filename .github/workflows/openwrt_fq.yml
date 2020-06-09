@@ -61,10 +61,13 @@ jobs:
           cd /home/runner/openwrt/
           sed -i 's/https:\/\/git.openwrt.org\/feed\/packages.git^2e6bd4cb86682b224803325127d3f777d40b3231/https:\/\/github.com\/coolsnowwolf\/packages/' feeds.conf.default
           sed -i 's/https:\/\/git.openwrt.org\/project\/luci.git^fb2f36306756d0d0782dcab8413a8bb7ec379e54/https:\/\/github.com\/coolsnowwolf\/luci/' feeds.conf.default
-          echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
+          #echo "src-git helloworld https://github.com/fw876/helloworld" >> feeds.conf.default
               
           ./scripts/feeds update -a     
           ./scripts/feeds install -a
+          
+          cd /home/runner/openwrt/package/lean/
+          git clone https://github.com/fw876/helloworld
   
       - name: Generate configuration file
         run: |
