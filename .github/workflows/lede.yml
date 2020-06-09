@@ -43,11 +43,13 @@ jobs:
         run: |
           cd /home/runner/lede/
           
-          #sed -i 's/#src-git/src-git/g' feeds.conf.default
-          sed -i 's/#src-git helloworld/src-git helloworld/g' feeds.conf.default
-          
           ./scripts/feeds update -a          
           ./scripts/feeds install -a
+          
+          cd /home/runner/lede/package/lean/
+          git clone https://github.com/fw876/helloworld
+          git clone https://github.com/jerrykuku/luci-app-vssr
+          
           
       - name: Generate configuration file
         run: |
