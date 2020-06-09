@@ -53,36 +53,39 @@ jobs:
           wget https://raw.githubusercontent.com/uosX/openwrt/master/op19.config
           cat op19.config > .config
           cat .config
+
+          #sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
+          #sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
+          #sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
+          
+          
+          cp /usr/bin/upx /home/runner/op19/staging_dir/host/bin/
+          cp /usr/bin/upx-ucl /home/runner/op19/staging_dir/host/bin/
           
       - name: Make download
         run: |
           cd /home/runner/op19/
-          make -j8 download V=99
- 
+          make -j8 download V=s
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
+          
       - name: Compile firmware
         run: |
           cd /home/runner/op19/
-          make V=99
+          echo -e "$(nproc) thread build."
+          make -j$(nproc) V=s
           
       - name: Prepare artifact
         run: |
           cd /home/runner/op19/
-          rm -rf ./artifact/
-          mkdir ./artifact/          
-          pwd
-          ls bin/targets/x86/64
-          cp .config ./artifact/
-          cp bin/targets/x86/64/openwrt-x86-64-combined-ext4-efi.img.gz ./artifact/
-          cp bin/targets/x86/64/openwrt-x86-64-combined-squashfs-efi.img.gz ./artifact/
-                
-      #- name: Assemble Artifact
-      #  run: |
-      #    find bin/targets/x86 -name "openwrt_*img*" | xargs -i mv -f {} ./artifact/          
+          cp .config bin
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: openwrt
-          path: ./artifact/
+          path: /home/runner/op19/bin
           
           
