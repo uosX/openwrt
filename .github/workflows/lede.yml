@@ -60,11 +60,11 @@ jobs:
           
       - name: Change Image configuration file
         run: |
-          sed -i 's/192.168.1.1/172.16.10.254/g' config_generate
-          sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' config_generate
-          sed -i 's/255.255.255.0/255.255.255.128/g' config_generate
-          sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" config_generate
-          sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" config_generate
+          sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
+          sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
+          sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
+          sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
+          sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
           
           
       - name: Make download
