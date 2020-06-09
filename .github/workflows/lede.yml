@@ -7,7 +7,7 @@ on:
       - '.github/workflows/lede.yml'
     
   schedule:
-    - cron: '0 16 */2 * *'
+    - cron: '0 15 */5 * *'
 
 env:
   SSH_ACTIONS: true
