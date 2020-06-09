@@ -48,8 +48,8 @@ jobs:
           
           cd /home/runner/lede/package/lean/
           git clone https://github.com/fw876/helloworld
+          git clone https://github.com/jerrykuku/lua-maxminddb.git
           git clone https://github.com/jerrykuku/luci-app-vssr
-          
           
       - name: Generate configuration file
         run: |
@@ -58,18 +58,11 @@ jobs:
           wget https://raw.githubusercontent.com/uosX/openwrt/master/lede.config   
           cat lede.config > .config
           cat .config
-          #make defconfig
-          
-          
-      - name: Change Image configuration file
-        run: |
-          sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
-          sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
-          sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
-          sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
-          sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
-          
-          
+
+          cd /home/runner/lede/
+          sed -i 's/192.168.1.1/172.16.10.1/g' package/base-files/files/bin/config_generate
+          sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).1/g' package/base-files/files/bin/config_generate
+                    
           cp /usr/bin/upx /home/runner/lede/staging_dir/host/bin/
           cp /usr/bin/upx-ucl /home/runner/lede/staging_dir/host/bin/
           
