@@ -56,11 +56,21 @@ jobs:
           wget https://raw.githubusercontent.com/uosX/openwrt/master/default.config                    
           cat default.config > .config 
           cat .config 
+          
+          #sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
+          #sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
+          #sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
+          #sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
+          
+          
+          cp /usr/bin/upx /home/runner/openwrt/staging_dir/host/bin/
+          cp /usr/bin/upx-ucl /home/runner/openwrt/staging_dir/host/bin/
   
       - name: Make download
         run: |
           cd /home/runner/openwrt/
-          make download -j8          
+          make -j8 download V=s        
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
  
@@ -82,3 +92,6 @@ jobs:
           path: /home/runner/openwrt/bin
           
           
+
+
+
