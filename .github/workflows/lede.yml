@@ -78,7 +78,8 @@ jobs:
       - name: Compile firmware
         run: |
           cd /home/runner/lede/
-          make V=s -j$(nproc)
+          echo -e "$(nproc) thread build."
+          make -j$(nproc) V=s
   
       - name: Setup Debug Session
         uses: P3TERX/debugger-action@master
