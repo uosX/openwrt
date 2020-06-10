@@ -49,7 +49,10 @@ jobs:
           cd /home/runner/lede/package/lean/
           git clone https://github.com/fw876/helloworld
           git clone https://github.com/jerrykuku/lua-maxminddb.git
-          git clone https://github.com/jerrykuku/luci-app-vssr
+          git clone https://github.com/jerrykuku/luci-app-vssr.git
+          git clone https://github.com/honwen/luci-app-aliddns.git
+          git clone https://github.com/pymumu/luci-app-smartdns.git
+          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git 
           
       - name: Generate configuration file
         run: |
@@ -62,6 +65,7 @@ jobs:
           cd /home/runner/lede/
           sed -i 's/192.168.1.1/172.16.10.1/g' package/base-files/files/bin/config_generate
           sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).1/g' package/base-files/files/bin/config_generate
+          sed -i 's/255.255.255.0/255.255.255.192/g' package/base-files/files/bin/config_generate
                     
           cp /usr/bin/upx /home/runner/lede/staging_dir/host/bin/
           cp /usr/bin/upx-ucl /home/runner/lede/staging_dir/host/bin/
