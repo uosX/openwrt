@@ -77,9 +77,10 @@ jobs:
           cat openwrt_fq.config > .config
           cat .config
           
-          #sed -i 's/192.168.1.1/172.16.10.254/g' package/base-files/files/bin/config_generate
-          #sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).254/g' package/base-files/files/bin/config_generate
-          #sed -i 's/255.255.255.0/255.255.255.128/g' package/base-files/files/bin/config_generate
+          sed -i 's/192.168.1.1/172.16.10.1/g' package/base-files/files/bin/config_generate
+          sed -i 's/192.168.\$((addr_offset++)).1/172.16.\$((addr_offset++)).1/g' package/base-files/files/bin/config_generate
+          sed -i 's/255.255.255.0/255.255.255.192/g' package/base-files/files/bin/config_generate
+          
           #sed -i 108a\\"                set network.\$1.gateway='172.16.10.254" package/base-files/files/bin/config_generate
           #sed -i 109a\\"                set network.\$1.dns='127.0.0.1 223.5.5.5 8.8.8.8" package/base-files/files/bin/config_generate
           
@@ -103,11 +104,13 @@ jobs:
         
       - name: Prepare artifact
         run: |
-          cd /home/runner/openwrt/
-          cp .config bin
+          cd /home/runner/lede/
+          mkdir artifact          
+          cp .config artifact/
+          cp bin/targets/x86/64/openwrt*.img.gz artifact/
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
-          name: openwrt
-          path: /home/runner/openwrt/bin
+          name: lede
+          path: /home/runner/lede/artifact
