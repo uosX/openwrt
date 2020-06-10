@@ -87,10 +87,12 @@ jobs:
       - name: Prepare artifact
         run: |
           cd /home/runner/lede/
-          cp .config bin
+          mkdir artifact          
+          cp .config artifact/
+          cp bin/targets/x86/64/openwrt*.img.gz artifact/
           
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: lede
-          path: /home/runner/lede/bin
+          path: /home/runner/lede/artifact
